@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/vant@4/lib/index.css" />
+  <script src="https://fastly.jsdelivr.net/npm/vue@3"></script>
+  <script src="https://fastly.jsdelivr.net/npm/vant@4/lib/vant.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <span>
+      {{message}}
+    </span>
+    <van-uploader :after-read="(file) => afterRead(file, item)" :before-read="beforeRead" accept="image/*" multiple
+      :max-count="9">
+      <van-button plain type="default" class="btn">上传截图</van-button>
+    </van-uploader>
+  </div>
+
+</body>
+
+<script>
+  const app = Vue.createApp({
+    data() {
+      return {
+        message: 'Hello, Vue 3!'
+      }
+    },
+    methods: {
+      beforeRead: async () => {
+        return new Promise((resolve, reject) => {
+          vant.showConfirmDialog({ message: '确认上传该照片吗？' })
+            .then(() => {
+              resolve(true)  //  resolve(true)不会执行after-read的方法， resolve(false)才会执行
+            })
+            .catch(() => {
+              reject(false)
+            })
+        })
+      },
+      afterRead: (file, item) => {
+        console.log(111111);
+      }
+    },
+  })
+  app.use(vant);
+  app.mount('#app');
+
+</script>
+
+</html>
